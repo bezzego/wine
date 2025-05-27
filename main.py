@@ -3,6 +3,8 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from datetime import datetime
 from collections import defaultdict
 from jinja2 import Environment, FileSystemLoader
+import os
+import argparse
 
 
 def format_years(n):
@@ -16,7 +18,8 @@ def format_years(n):
         return "лет"
 
 
-def main(data_path="wine3.xlsx"):
+def main(data_path=None):
+    data_path = data_path or os.getenv("DATA_PATH", "wine3.xlsx")
     env = Environment(loader=FileSystemLoader("."))
     template = env.get_template("template.html")
     winery_age = datetime.now().year - 1920
@@ -53,4 +56,11 @@ def main(data_path="wine3.xlsx"):
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Генерация страницы и запуск HTTP-сервера"
+    )
+    parser.add_argument(
+        "-d", "--data-path", help="Путь к Excel-файлу с данными", default=None
+    )
+    args = parser.parse_args()
+    main(args.data_path)
