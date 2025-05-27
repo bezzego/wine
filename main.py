@@ -19,7 +19,7 @@ def format_years(n):
 
 
 def main(data_path=None):
-    data_path = data_path or os.getenv("DATA_PATH", "wine3.xlsx")
+    data_path = data_path or os.getenv("DATA_PATH", "example.xlsx")
     env = Environment(loader=FileSystemLoader("."))
     template = env.get_template("template.html")
     winery_age = datetime.now().year - 1920
