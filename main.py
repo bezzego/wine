@@ -18,8 +18,16 @@ def format_years(n):
         return "лет"
 
 
-def main(data_path=None):
-    data_path = data_path or os.getenv("DATA_PATH", "example.xlsx")
+def main():
+    parser = argparse.ArgumentParser(
+        description="Генерация страницы и запуск HTTP-сервера"
+    )
+    parser.add_argument(
+        "-d", "--data-path", help="Путь к Excel-файлу с данными", default=None
+    )
+    args = parser.parse_args()
+    data_path = args.data_path or os.getenv("DATA_PATH", "example.xlsx")
+
     env = Environment(loader=FileSystemLoader("."))
     template = env.get_template("template.html")
     winery_age = datetime.now().year - 1920
@@ -56,11 +64,4 @@ def main(data_path=None):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Генерация страницы и запуск HTTP-сервера"
-    )
-    parser.add_argument(
-        "-d", "--data-path", help="Путь к Excel-файлу с данными", default=None
-    )
-    args = parser.parse_args()
-    main(args.data_path)
+    main()
