@@ -3,7 +3,6 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from datetime import datetime
 from collections import defaultdict
 from jinja2 import Environment, FileSystemLoader
-import os
 import argparse
 
 
@@ -23,10 +22,10 @@ def main():
         description="Генерация страницы и запуск HTTP-сервера"
     )
     parser.add_argument(
-        "-d", "--data-path", help="Путь к Excel-файлу с данными", default=None
+        "-d", "--data-path", help="Путь к Excel-файлу с данными", required=True
     )
     args = parser.parse_args()
-    data_path = args.data_path or os.getenv("DATA_PATH", "example.xlsx")
+    data_path = args.data_path
 
     env = Environment(loader=FileSystemLoader("."))
     template = env.get_template("template.html")
